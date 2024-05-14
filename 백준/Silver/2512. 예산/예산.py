@@ -1,26 +1,27 @@
 n = int(input())
 jibang = list(map(int, input().split()))
-total_budget = int(input())
+budget = int(input())
 
-def calculate_budget(upper_bound):
-    total_allocated = 0
-    for budget in jibang:
-        if budget > upper_bound:
-            total_allocated += upper_bound
+def cal_budget(mid):
+    total = 0
+    for i in jibang:
+        if i > mid:
+            total += mid
         else:
-            total_allocated += budget
-    return total_allocated
+            total += i
+    return total
 
-low = 0
-high = max(jibang)
-answer = 0
 
-while low <= high:
-    mid = (low + high) // 2
-    if calculate_budget(mid) <= total_budget:
+min_n = 0
+max_n = max(jibang)
+answer = -1
+
+while min_n <= max_n:
+    mid = (max_n + min_n) // 2
+    
+    if cal_budget(mid) <= budget:
         answer = mid
-        low = mid + 1
+        min_n = mid + 1
     else:
-        high = mid - 1
-
+        max_n = mid - 1
 print(answer)
