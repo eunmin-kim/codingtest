@@ -1,52 +1,52 @@
-# 입력 받기
-initial_money = int(input())
-stock_prices = list(map(int, input().split()))
+amount = int(input())
+stock_price = list(map(int, input().split()))
+jun = amount
+sungmin = amount
 
-# 준현이 전략 (BNP)
-jun_money = initial_money
-jun_stocks = 0
-for price in stock_prices:
-    if jun_money >= price:
-        jun_stocks += jun_money // price
-        jun_money %= price
+jun_stock = 0
+sungmin_stock = 0
+up = 0
+down = 0
+for i in range(len(stock_price)):
+    jun_stock += jun // stock_price[i]
+    jun = jun % stock_price[i]
+for i in range(1,len(stock_price)):
 
-# 성민이 전략 (TIMING)
-sung_money = initial_money
-sung_stocks = 0
-up_days = 0
-down_days = 0
-for i in range(1, len(stock_prices)):
-    if stock_prices[i] > stock_prices[i-1]:
-        up_days += 1
-        down_days = 0
-    elif stock_prices[i] < stock_prices[i-1]:
-        down_days += 1
-        up_days = 0
-    else:
-        up_days = 0
-        down_days = 0
     
-    # 3일 연속 상승 후 다음 날 매도
-    if up_days == 3:
-        sung_money += sung_stocks * stock_prices[i]
-        sung_stocks = 0
-        up_days = 0  # 매도 후 상승 카운트 초기화
-    # 3일 연속 하락 후 다음 날 매수
-    elif down_days == 3:
-        if sung_money >= stock_prices[i]:
-            sung_stocks += sung_money // stock_prices[i]
-            sung_money %= stock_prices[i]
-        down_days = 0  # 매수 후 하락 카운트 초기화
+    if stock_price[i-1] < stock_price[i]:
+        up += 1
+        down = 0
+    elif stock_price[i-1] > stock_price[i]:
+        down += 1
+        up = 0
+    else:
+        up = 0
+        down = 0
+    
+    
+    
+    
+    # sell
+    if up == 3:
+        sungmin += stock_price[i] * sungmin_stock
+        sungmin_stock = 0
+        up = 0
+    # buy
+    if down == 3:
+        if sungmin >= stock_price[i]:
+            sungmin_stock += sungmin // stock_price[i]
+            sungmin = sungmin - sungmin_stock * stock_price[i]
+        down = 0
 
-# 마지막 날 자산 계산
-last_price = stock_prices[-1]
-jun_final_assets = jun_money + jun_stocks * last_price
-sung_final_assets = sung_money + sung_stocks * last_price
+    
+last_price = stock_price[len(stock_price)-1]
 
-# 결과 출력
-if jun_final_assets > sung_final_assets:
+jun_last = last_price * jun_stock + jun
+sung_last = last_price * sungmin_stock + sungmin
+
+if jun_last > sung_last:
     print("BNP")
-elif sung_final_assets > jun_final_assets:
+elif jun_last < sung_last:
     print("TIMING")
 else:
     print("SAMESAME")
