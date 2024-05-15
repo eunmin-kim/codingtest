@@ -1,59 +1,41 @@
 n = int(input())
+nums = []
 
-numbers = [list(map(str,input().split())) for _ in range(n)]
-# string을 미리 넣어준 이유는, 나중에 쪼개기 위해서
-
+for i in range(n):
+    nums.append(list(map(str, input().split())))
 answer = 0
-
-# (1) 세 자리 숫자 만들기
-for a in range(1,10): # 100의 자리수
-    for b in range(1,10): # 10의 자리수
-        for c in range(1,10): # 1의 자리수
+for a in range(1,10):
+    for b in range(1,10):
+        for c in range(1,10):
             counter = 0
-            
-            # (2) 다른 세 자리수
-            if( a == b or b == c or c == a):
+            if (a == b or b == c or a == c):
                 continue
             
-            # continue, 그 숫자를 넘김
-            # break, 반복문을 넘김
-
-            # (3) 배열에 넣은 조건을 넣어주기
-            for array in numbers:
-                check = list(array[0]) # ['1','2','3']
-                strike = int(array[1])
-                ball = int(array[2])
-
+            for check in nums:
+                number = list(check[0])
+                strike = int(check[1])
+                ball = int(check[2])
+               
                 strike_count = 0
                 ball_count = 0
-
-                #스트라이크 계산기
-                if (a == int(check[0])):
+            
+                if a == int(number[0]):
                     strike_count += 1
-                if (b == int(check[1])):
+                if b == int(number[1]):
                     strike_count += 1
-                if (c == int(check[2])):
+                if c == int(number[2]):
                     strike_count += 1
-                
-
-                #볼 계산기
-                if (a == int(check[1]) or a == int(check[2])):
+            
+                if a == int(number[1]) or a == int(number[2]):
                     ball_count += 1
-                if (b == int(check[0]) or b == int(check[2])):
+                if b == int(number[0]) or b == int(number[2]):
                     ball_count += 1
-                if (c == int(check[0]) or c == int(check[1])):
+                if c == int(number[0]) or c == int(number[1]):
                     ball_count += 1
-                
-                
-                #(4) 매칭 여부 확인하기
-                if (strike != strike_count):
+            
+                if strike_count != strike or ball_count != ball:
                     break
-                if (ball != ball_count):
-                    break
-                
                 counter += 1
-
             if counter == n:
                 answer += 1
-                
 print(answer)
