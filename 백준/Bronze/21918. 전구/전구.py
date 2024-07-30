@@ -1,21 +1,25 @@
-n,m = map(int, input().split())
-nums = list(map(int, input().split()))
+N, M = map(int, input().split())
+status = list(map(int, input().split()))
+commands = []
+for i in range(M):
+    command = list(map(int, input().split()))
+    commands.append(command)
 
-for i in range(m):
-    a , b, c = map(int,input().split())
-    if a == 1:
-        nums[b-1] = c
-    elif a == 2:
-        for j in range(b,c+1):
-            if nums[j-1] == 0:
-                nums[j-1] = 1
+
+for j in range(len(commands)):
+    if commands[j][0] == 1:
+        status[commands[j][1]-1] = commands[j][2]
+    if commands[j][0] == 2:
+        for t in range(commands[j][1]-1,commands[j][2]):
+            if status[t] == 0:
+                status[t] = 1
             else:
-                nums[j-1] = 0
-    elif a == 3:
-        for j in range(b,c+1):
-            nums[j-1] = 0
-    else:
-        for j in range(b,c+1):
-            nums[j-1] = 1
-for i in nums:
+                status[t] = 0
+    if commands[j][0] == 3:
+        for t in range(commands[j][1]-1,commands[j][2]):
+            status[t] = 0
+    if commands[j][0] == 4:
+        for t in range(commands[j][1]-1,commands[j][2]):
+            status[t] = 1
+for i in status:
     print(i,end=" ")
